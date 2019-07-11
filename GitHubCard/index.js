@@ -1,7 +1,28 @@
+const cards = document.querySelector('.cards');
 /* Step 1: using axios, send a GET request to the following URL 
            (replacing the palceholder with your Github name):
            https://api.github.com/users/<your name>
 */
+axios.get('https://api.github.com/users/skyler2440')
+  .then(data => {
+    console.log('response', data)
+    const avatar = data.data.avatar_url;
+    const name = data.data.name;
+    const username = data.data.login;
+    const location = data.data.location;
+    const userurl = data.data.html_url;
+    const followers = data.data.followers;
+    const following = data.data.following;
+    const bio = data.data.bio;
+    console.log(avatar, name, username, location,
+      userurl, followers, following, bio)
+      cards.appendChild(createCard(avatar, name, username, location,
+        userurl, followers, following, bio))
+  })
+  .catch(error => {
+    // Handles failure:
+    console.log('The API is currently down, try again later', error)
+  })
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -45,6 +66,52 @@ const followersArray = [];
 </div>
 
 */
+
+function createCard(avatar, name, username, location,
+  userurl, followers, following, bio)
+  {
+const card = document.createElement('div');
+const image = document.createElement('img');
+const cardInfo = document.createElement('div');
+const header = document.createElement('h3');
+const uNameP = document.createElement('p');
+const locP = document.createElement('p');
+const profileP = document.createElement('p');
+const address = document.createElement('a');
+const followerP = document.createElement('p');
+const followingP = document.createElement('p');
+const bioP = document.createElement('p');
+
+card.appendChild(image);
+card.appendChild(cardInfo);
+cardInfo.appendChild(header);
+cardInfo.appendChild(uNameP);
+cardInfo.appendChild(locP);
+cardInfo.appendChild(profileP);
+profileP.appendChild(address);
+cardInfo.appendChild(followerP);
+cardInfo.appendChild(followingP);
+cardInfo.appendChild(bioP);
+
+card.classList.add('card');
+cardInfo.classList.add('card-info');
+header.classList.add('name');
+uNameP.classList.add('username');
+
+image.src = avatar
+header.textContent = name
+uNameP.textContent = `Username: ${username}`
+locP.textContent = `Location ${location}`
+// profileP.textContent = 
+address.href = userurl;
+address.innerText = 'url: ' + (userurl)
+followerP.textContent = `Followers: ${followers}`
+followingP.textContent = `Following: ${following}`
+bioP.textContent = `Bio: ${bio}`
+return card;
+
+}
+
 
 /* List of LS Instructors Github username's: 
   tetondan
